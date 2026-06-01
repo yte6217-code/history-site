@@ -1,4 +1,11 @@
 import tkinter as tk
+import os
+
+# ✅ 현재 파일 위치 기준 경로 설정 (핵심🔥)
+base_path = os.path.dirname(os.path.abspath(__file__))
+
+def get_image_path(filename):
+    return os.path.join(base_path, filename)
 
 window = tk.Tk()
 window.title("대한독립만세")
@@ -11,16 +18,19 @@ label1 = tk.Label(
 )
 label1.pack(pady=10)
 
-logo = tk.PhotoImage(file="tae.png")
-image_label = tk.Label(window, image=logo)
-image_label.pack()
+# ✅ 로고 이미지 (경로 고정)
+try:
+    logo = tk.PhotoImage(file=get_image_path("tae.png"))
+    image_label = tk.Label(window, image=logo)
+    image_label.pack()
+except:
+    pass
 
 label2 = tk.Label(
     window,
     text="업적을 알고 싶은 독립운동가의 이름을 입력해주세요."
 )
 label2.pack()
-
 
 textbox = tk.Text(window, height=1, width=30)
 textbox.pack(pady=10)
@@ -38,29 +48,25 @@ fighters = {
         "cf": "봉오동 전투 - 1920년 만주 봉오동에서 독립군 부대가 일본 정규군을 대패시킨 전투\n청산리 대첩 - 1920년 10월에 김좌진의 북로 군정서와 홍범도의 대한 독립군이 청산리 일대에서 일본군과 싸워 대승한 전투",
         "image": "hbd.png"
     },
-
     "이육사": {
         "title": "이육사",
-        "achievement": "- 「청포도」, 「절정」, 「광야」 저술로 항일정신과 민족정신 고취\n- 의열단 등에서 항일무장투쟁 전개",
-        "cf": "절정\n\t\t이육사\n매운 계절의 채찍에 갈겨\n마침내 북방으로 휩쓸려 오다\n\n하늘도 그만 지쳐 끝난 고원\n서릿밭 칼날진 그위에 서다\n\n어디다 무릎을 꿇어야 하나\n한 발 재겨 디딜 곳조차 없다\n\n이러매 눈 감아 생각해 볼밖에\n겨울은 강철로 된 무지갠가 보다",
+        "achievement": "- 「청포도」, 「절정」, 「광야」 저술",
+        "cf": "대표 시 '절정'으로 민족정신을 표현",
         "image": "264.png"
     },
-
     "신채호": {
         "title": "신채호",
-        "achievement": "- 『대한매일신보』 주필로서 항일 언론운동 참여\n- 임시정부 수립 참여\n- 한국사 연구를 통한 민족의식 고취에 힘씀",
-        "cf": "대한민국임시정부 - 1919년 3ㆍ1운동이 일어난 후에 중국 상하이에서 조직ㆍ선포된 우리나라의 임시정부(독립운동을 총지휘하는 중추적 역할을 수행)",
+        "achievement": "- 항일 언론운동 및 역사 연구",
+        "cf": "민족주의 사학자",
         "image": "sch.png"
     },
-
     "조만식": {
         "title": "조만식",
-        "achievement": "- 물산장려운동 참여\n- 농촌진흥운동 참여\n- 민립대학설립운동 참여",
-        "cf": "물산장려운동 - '우리 것은 우리가 만들어서 쓰자'라는 구호 아래 전개된 민족 경제 자립 운동(1920년 평양에 조만식을 중심으로 '조선물산장려회'가 조직되면서 시작됨)",
+        "achievement": "- 물산장려운동 전개",
+        "cf": "민족 경제 자립 운동가",
         "image": "jms.png"
     }
 }
-
 
 def click():
     name = textbox.get("1.0", tk.END).strip()
@@ -70,28 +76,29 @@ def click():
 
         new_window = tk.Toplevel(window)
         new_window.title(info["title"])
-        new_window.geometry("1000x900")
+        new_window.geometry("600x700")
 
         title_label = tk.Label(
             new_window,
             text=info["title"],
-            font=("맑은 고딕", 24, "bold")
+            font=("맑은 고딕", 20, "bold")
         )
         title_label.pack(pady=20)
 
+        # ✅ 이미지 (절대 경로 사용)
         try:
-            photo = tk.PhotoImage(file=info["image"])
+            img_path = get_image_path(info["image"])
+            photo = tk.PhotoImage(file=img_path)
             image_label = tk.Label(new_window, image=photo)
             image_label.image = photo
             image_label.pack(pady=10)
-
         except:
             pass
 
         achievement_label = tk.Label(
             new_window,
             text=info["achievement"],
-            font=("맑은 고딕", 16),
+            font=("맑은 고딕", 14),
             justify="left"
         )
         achievement_label.pack(pady=20)
@@ -99,14 +106,15 @@ def click():
         cf_label = tk.Label(
             new_window,
             text=info["cf"],
-            font=("맑은 고딕", 10)
+            font=("맑은 고딕", 10),
+            wraplength=500
         )
-        cf_label.pack(side="bottom", pady=20)
+        cf_label.pack(pady=20)
 
     else:
         error_window = tk.Toplevel(window)
         error_window.title("검색 결과")
-        error_window.geometry("350x100")
+        error_window.geometry("300x100")
 
         error_label = tk.Label(
             error_window,
