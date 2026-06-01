@@ -1,7 +1,6 @@
 import tkinter as tk
 import os
 
-# ✅ 현재 파일 위치 기준 경로 설정 (핵심🔥)
 base_path = os.path.dirname(os.path.abspath(__file__))
 
 def get_image_path(filename):
@@ -18,7 +17,6 @@ label1 = tk.Label(
 )
 label1.pack(pady=10)
 
-# ✅ 로고 이미지 (경로 고정)
 try:
     logo = tk.PhotoImage(file=get_image_path("tae.png"))
     image_label = tk.Label(window, image=logo)
@@ -85,7 +83,6 @@ def click():
         )
         title_label.pack(pady=20)
 
-        # ✅ 이미지 (절대 경로 사용)
         try:
             img_path = get_image_path(info["image"])
             photo = tk.PhotoImage(file=img_path)
